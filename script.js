@@ -22,7 +22,7 @@ let jsonData; // Переменная для хранения JSON-данных
           return;
         }
         
-        const moscowLoads = Object.values(jsonData).filter(item => item.cities === 'Москва Восток');
+        const moscowLoads = Object.values(jsonData)[0].filter(item => item.title === 'Москва Восток');
         
         
         
@@ -64,38 +64,40 @@ let jsonData; // Переменная для хранения JSON-данных
     });
 
 
-    
+    ymaps.ready(function () {
+      var myMap = new ymaps.Map('map', {
+          center: [55.755814, 37.617635], // Координаты центра карты
+          zoom: 10 // Масштаб карты
+      });
+
+      // Создаем маркер
+      var myPlacemark = new ymaps.Placemark(
+          [55.717426,37.757728], // Координаты маркера
+          {
+              // Дополнительная информация о маркере
+              name: 'Москва транзит',
+              phone: '8(495) 660-11-11'
+          }
+      );
+
+      // Добавляем маркер на карту
+      myMap.geoObjects.add(myPlacemark);
+  });
 
 
-// Все данные
-    // try {
-    //     const jsonData = JSON.parse(content);
-    //     document.getElementById('jsonOutput').textContent = JSON.stringify(jsonData, null, 2);
-
-    //     // Вывести данные JSON-файла в консоль
-    //     console.log(jsonData);
-    //   } catch (error) {
-    //     alert('Произошла ошибка при парсинге JSON: ' + error.message);
-    //   }
-
-
-// Грузы которые прнимают от москвы
-    //   try {
-    //     const jsonData = JSON.parse(content);
-    //     document.getElementById('jsonOutput').textContent = JSON.stringify(jsonData, null, 2);
-
-    //     // Вывести данные JSON-файла в консоль
-    //     console.log(jsonData);
-
-    //     // Функция для фильтрации грузов из Москвы
-    //     function filterMoscowLoads() {
-    //       const moscowLoads = jsonData.filter(item => item.from === 'Москва');
-    //       document.getElementById('jsonOutput').textContent = JSON.stringify(moscowLoads, null, 2);
-    //       console.log(moscowLoads);
-    //     }
-
-    //     // Добавление обработчика для кнопки фильтрации
-    //     document.getElementById('filterButton').addEventListener('click', filterMoscowLoads);
-    //   } catch (error) {
-    //     alert('Произошла ошибка при парсинге JSON: ' + error.message);
-    //   }
+//   var myPlacemark = new ymaps.Placemark(
+//     [55.533308,37.579376], // Координаты маркера
+//     {
+//         // Дополнительная информация о маркере
+//         name: 'Москва Бутово',
+//         phone: '8(495) 660-11-11'
+//     }
+// );
+// var myPlacemark = new ymaps.Placemark(
+//     [55.882411,37.514837], // Координаты маркера
+//     {
+//         // Дополнительная информация о маркере
+//         name: 'Москва Коровинское',
+//         phone: '8(495) 660-11-11'
+//     }
+// );

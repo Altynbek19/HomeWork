@@ -21,8 +21,45 @@ let jsonData; // Переменная для хранения JSON-данных
           alert('JSON-данные не являются объектом.');
           return;
         }
+
         
+        // Фильтр для Москва Восток
         const moscowLoads = Object.values(jsonData)[0].filter(item => item.title === 'Москва Восток');
+
+
+
+// Получите массив филиалов из JSON
+const branches = jsonData.branches;
+
+// Создайте массив для хранения всех складов
+const allWarehouses = [];
+
+// Пройдитесь по каждому филиалу
+branches.forEach(branch => {
+  // Получите массив складов (warehouses) для текущего филиала
+  const warehouses = branch.divisions.map(division => division.warehouses).flat();
+
+  // Добавьте склады в массив всех складов
+  allWarehouses.push(...warehouses);
+});
+
+// Создайте объект, содержащий массив всех складов
+const warehousesJSON = {
+  warehouses: allWarehouses
+};
+
+// Преобразуйте объект в JSON-строку с отступами для более читаемого вида
+const warehousesJSONString = JSON.stringify(warehousesJSON, null, 2);
+
+// Выведите JSON-строку в консоль
+console.log(warehousesJSONString);
+
+// Выведите JSON-строку на веб-страницу
+const jsonOutputContainer = document.getElementById('jsonOutput');
+jsonOutputContainer.textContent = warehousesJSONString;
+
+
+        // const moscowLoads = Object.values(jsonData)[0](divisions)[0][warehouses][0].filter(item => item.coordinates === '55.717426,37.757728');
         
         
         
@@ -61,43 +98,65 @@ let jsonData; // Переменная для хранения JSON-данных
       };
 
       reader.readAsText(file);
+      
+
+
+
+      // Получите массив филиалов из JSON
+    const branches = jsonData;
+  
+    // Создайте карту на вашей странице
+    ymaps.ready(function () {
+      var myMap = new ymaps.Map('map', {
+        center: [55.755814, 37.617635], // Координаты центра карты
+        zoom: 10 // Масштаб карты
+      });
+  
+      // Пройдитесь по каждому филиалу
+      branches.forEach(branch => {
+        // Получите массив складов (warehouses) для текущего филиала
+        const warehouses = branch.divisions.map(division => division.warehouses).flat();
+  
+        // Пройдитесь по каждому складу и добавьте маркер на карту
+        warehouses.forEach(warehouse => {
+          var coordinates = warehouse.coordinates.split(',').map(Number); // Преобразуйте строку координат в массив чисел
+  
+          // Создайте маркер для склада
+          var myPlacemark = new ymaps.Placemark(
+            coordinates, // Координаты маркера
+            {
+              // Дополнительная информация о маркере
+              name: warehouse.name,
+              phone: warehouse.telephone
+            }
+          );
+  
+          // Добавьте маркер на карту
+          myMap.geoObjects.add(myPlacemark);
+        });
+      });
+    });
     });
 
 
-    ymaps.ready(function () {
-      var myMap = new ymaps.Map('map', {
-          center: [55.755814, 37.617635], // Координаты центра карты
-          zoom: 10 // Масштаб карты
-      });
+  //   ymaps.ready(function () {
+  //     var myMap = new ymaps.Map('map', {
+  //       center: [55.755814, 37.617635], // Координаты центра карты
+  //       zoom: 10 // Масштаб карты
+  //     });
+  
 
-      // Создаем маркер
-      var myPlacemark = new ymaps.Placemark(
-          [55.717426,37.757728], // Координаты маркера
-          {
-              // Дополнительная информация о маркере
-              name: 'Москва транзит',
-              phone: '8(495) 660-11-11'
-          }
-      );
+  //     // Создаем маркер
+  //     var myPlacemark = new ymaps.Placemark(
+  //         coordinates, // Координаты маркера
+  //         {
+  //             // Дополнительная информация о маркере
+  //             name: warehouse.name,
+  //             phone: warehouse.telephone
+  //         }
+  //     );
 
-      // Добавляем маркер на карту
-      myMap.geoObjects.add(myPlacemark);
-  });
+  //     // Добавляем маркер на карту
+  //     myMap.geoObjects.add(myPlacemark);
+  // });
 
-
-//   var myPlacemark = new ymaps.Placemark(
-//     [55.533308,37.579376], // Координаты маркера
-//     {
-//         // Дополнительная информация о маркере
-//         name: 'Москва Бутово',
-//         phone: '8(495) 660-11-11'
-//     }
-// );
-// var myPlacemark = new ymaps.Placemark(
-//     [55.882411,37.514837], // Координаты маркера
-//     {
-//         // Дополнительная информация о маркере
-//         name: 'Москва Коровинское',
-//         phone: '8(495) 660-11-11'
-//     }
-// );

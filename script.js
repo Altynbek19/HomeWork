@@ -37,7 +37,7 @@ const allWarehouses = [];
 // Пройдитесь по каждому филиалу
 branches.forEach(branch => {
   // Получите массив складов (warehouses) для текущего филиала
-  const warehouses = branch.divisions.map(division => division.warehouses).flat();
+  const warehouses = branch.divisions.map(division => division.warehouses);
 
   // Добавьте склады в массив всех складов
   allWarehouses.push(...warehouses);
@@ -52,14 +52,12 @@ const warehousesJSON = {
 const warehousesJSONString = JSON.stringify(warehousesJSON, null, 2);
 
 // Выведите JSON-строку в консоль
-console.log(warehousesJSONString);
+console.log(allWarehouses);
 
 // Выведите JSON-строку на веб-страницу
 const jsonOutputContainer = document.getElementById('jsonOutput');
 jsonOutputContainer.textContent = warehousesJSONString;
 
-
-        // const moscowLoads = Object.values(jsonData)[0](divisions)[0][warehouses][0].filter(item => item.coordinates === '55.717426,37.757728');
         
         
         

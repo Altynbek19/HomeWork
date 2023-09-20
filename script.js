@@ -14,6 +14,7 @@ let jsonData; // Переменная для хранения JSON-данных
 
 // Функция для фильтрации и отображения грузов из Москвы
 function filterMoscowLoads() {
+  alert("Чтобы узнать больше информаций о точке нажмите на метку")
   if (!jsonData) {
     alert('JSON-данные не загружены.');
     return;
@@ -45,8 +46,7 @@ console.log("Все склады в Москве Восток: ", moscowVostokWa
     // Пройдитесь по каждому складу и добавьте метку на карту
     moscowVostokWarehouses.forEach(warehouse => {
       var coordinates = warehouse.coordinates.split(',').map(Number); // Преобразуйте строку координат в массив чисел
-
-      // Создайте метку для склада
+      
       // Создайте метку для склада
 var myPlacemark = new ymaps.Placemark(
   coordinates, // Координаты метки
